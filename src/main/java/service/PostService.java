@@ -8,6 +8,10 @@ import java.util.List;
 public class PostService {
     private final List<Post> posts = new ArrayList<>();
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
     public void createPost(String title, String content) {
         int id = posts.size() + 1;
         Post newPost = new Post(id, title, content);

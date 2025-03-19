@@ -4,6 +4,7 @@ import model.Post;
 import service.PostService;
 import view.ConsoleView;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class CommandController {
@@ -30,6 +31,9 @@ public class CommandController {
                 continue;
             }
             switch (command) {
+                case "목록":
+                    viewPosts();
+                    break;
                 case "작성":
                     createPost();
                     break;
@@ -48,6 +52,15 @@ public class CommandController {
             }
         }
         scanner.close();
+    }
+
+    private void viewPosts() {
+        List<Post> posts = postService.getPosts();
+        for(Post post : posts) {
+            view.displayMessageln(post.getId()+"번 게시글");
+            view.displayMessageln("제목 : "+post.getTitle());
+            view.displayMessageln("내용 : "+post.getTitle());
+        }
     }
 
     private void createPost() {
