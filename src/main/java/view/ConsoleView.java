@@ -2,11 +2,11 @@ package view;
 
 public class ConsoleView {
 
-    public void displayCommand(String command) {
+    public void displayMessageln(String command) {
         System.out.println(command);
     }
 
-    public void displayDefault(String command) {
+    public void displayMessage(String command) {
         System.out.print(command);
     }
 }

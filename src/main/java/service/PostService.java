@@ -42,4 +42,10 @@ public class PostService {
         }
         return posts.get(id - 1);
     }
+    public Post getPost() {
+        if (posts.isEmpty()) {  // 리스트가 비어있을 경우 null 반환
+            return null;
+        }
+        return getPost(posts.size());
+    }
 }
