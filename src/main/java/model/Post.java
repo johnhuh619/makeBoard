@@ -1,14 +1,25 @@
 package model;
 
+import java.time.LocalDateTime;
+
 public class Post {
     private int id;
     private String title;
     private String content;
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
-    public Post(int id, String title, String content) {
+    private int boardId;
+    private int userId;
+
+    public Post(int id, String title, String content, LocalDateTime createdDate, LocalDateTime updatedDate, int boardId, int userId) {
         this.id = id;
         this.title = title;
         this.content = content;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.boardId = boardId;
+        this.userId = userId;
     }
 
     public String getContent() {
