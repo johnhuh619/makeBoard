@@ -74,45 +74,63 @@ public class CommandController {
     }
 
     private void viewPost() {
-
-        Post post = postService.getPost();
-        if(post == null) {
-            view.displayMessageln("게시글이 없습니다.");
+        view.displayMessage("어떤 게시물을 조회할까요?");
+        String cmd = scanner.nextLine();
+        int id;
+        try{
+            id = Integer.parseInt(cmd);
+        } catch(NumberFormatException e) {
+            view.displayMessageln("올바른 번호를 입력해주세요");
             return;
         }
+        Post post = postService.getPost(id);
+        if(post == null) {
+            view.displayMessageln(id+"번 게시글이 없습니다.");
+            return;
+        }
+        view.displayMessageln(id+"번 게시물");
         view.displayMessageln("제목: "+post.getTitle());
         view.displayMessageln("내용: "+post.getContent());
+
     }
 
     private void deletePost() {
-//        view.displayMessage("어떤 게시물을 삭제할까요?: ");
-//        String cmd = scanner.nextLine();
+        view.displayMessage("어떤 게시물을 삭제할까요?: ");
+        String cmd = scanner.nextLine();
+        int id;
         try {
-            // int id = Integer.parseInt(cmd);
-            int id = postService.getPost().getId();
-            postService.deletePost(id);
-            view.displayMessageln("게시글 " + id + " 삭제되었습니다");
+            id = Integer.parseInt(cmd);
         } catch (NumberFormatException e) {
-            //Todo
+            view.displayMessageln("올바른 번호를 입력해주세요");
+            return;
         }
+        Post post = postService.getPost(id);
+        if(post == null) {
+            view.displayMessageln(id+"번 게시글이 없습니다.");
+            return;
+        }
+        postService.deletePost(id);
+        view.displayMessageln("게시글 " + id + " 삭제되었습니다");
     }
 
     private void updatePost() {
-        // view.displayMessage("어떤 게시물을 수정할까요?: ");
-        // String cmd = scanner.nextLine();
+        view.displayMessage("어떤 게시물을 수정할까요?: ");
+        String cmd = scanner.nextLine();
+        int id;
         try {
-//            int id = Integer.parseInt(cmd);
-//            view.displayMessageln("게시글 " + id + "를 수정합니다");
-            int id = postService.getPost().getId();
-            view.displayMessage("제목: ");
-            String title = scanner.nextLine();
-            view.displayMessage("내용: ");
-            String content = scanner.nextLine();
-
-            postService.updatePost(id, title, content);
-            view.displayMessageln("게시글이 수정되었습니다");
+            id = Integer.parseInt(cmd);
         } catch (NumberFormatException e) {
-            // Todo
+            view.displayMessageln("올바른 번호를 입력해주세요.");
+            return;
         }
+        view.displayMessageln("게시글 " + id + "를 수정합니다");
+        view.displayMessage("제목: ");
+        String title = scanner.nextLine();
+        view.displayMessage("내용: ");
+        String content = scanner.nextLine();
+
+        postService.updatePost(id, title, content);
+        view.displayMessageln(id + "번 게시물이 성공적으로 수정되었습니다.");
+
     }
 }
