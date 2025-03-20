@@ -23,7 +23,7 @@ public class CommandController {
         boolean run = true;
         view.displayMessageln("Get Started...");
         while (run) {
-            view.displayMessage("command > ");
+            view.displayMessage("a ");
             String command = scanner.nextLine();
             if (command.equalsIgnoreCase("exit")) {
                 view.displayMessageln("Shutting down...");
@@ -69,7 +69,7 @@ public class CommandController {
         view.displayMessage("내용: ");
         String content = scanner.nextLine();
 
-        postService.createPost(title, content);
+        //postService.createPost(title, content);
         view.displayMessageln("게시글이 작성되었습니다");
     }
 
