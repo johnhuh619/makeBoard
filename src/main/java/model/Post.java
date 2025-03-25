@@ -7,6 +7,7 @@ public class Post {
     private String title;
     private String content;
     private LocalDateTime createdDate;
+
     private LocalDateTime updatedDate;
 
     private int boardId;
@@ -45,4 +46,21 @@ public class Post {
     public void setId(int id) {
         this.id = id;
     }
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public LocalDateTime getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public int getBoardId() {
+        return boardId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
 }
