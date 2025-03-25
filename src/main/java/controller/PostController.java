@@ -52,7 +52,7 @@ public class PostController implements Controller {
     }
 
     private void handleViewPost(Map<String, String> params) {
-        view.displayMessage("어떤 게시물을 조회할까요?");
+        view.displayMessage("어떤 게시물을 조회할까요? ");
         String cmd = sc.nextLine();
         int id;
         try {
@@ -65,7 +65,7 @@ public class PostController implements Controller {
         // postService: READ
         Post post = postService.getPost(id);
         if (post == null) {
-            view.displayMessageln("[404]" + id + "번 게시글이 없습니다.");
+            view.displayMessageln("[404] " + id + "번 게시글이 없습니다.");
             return;
         }
         view.displayMessageln(id + "번 게시물");
