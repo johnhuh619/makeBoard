@@ -44,7 +44,7 @@ public class PostController implements Controller {
                 case "view":
                     handleViewPost(params);
                 default:
-                    view.displayMessageln("[404] 잘못된 요청입니다.");
+                    view.displayMessageln("[400] 잘못된 요청입니다.");
             }
         } catch (Exception e) {
             view.displayMessageln("[500] 서버 오류가 발생했습니다: " + e.getMessage());
@@ -65,7 +65,7 @@ public class PostController implements Controller {
         // postService: READ
         Post post = postService.getPost(id);
         if (post == null) {
-            view.displayMessageln("[404] " + id + "번 게시글이 없습니다.");
+            view.displayMessageln("[400] " + id + "번 게시글이 없습니다.");
             return;
         }
         view.displayMessageln(id + "번 게시물");
@@ -99,14 +99,14 @@ public class PostController implements Controller {
 
     private void handleEditPost(Map<String, String> params) {
         if (!params.containsKey("postId")) {
-            throw new IllegalArgumentException("[404] postId가 필요합니다.");
+            throw new IllegalArgumentException("[400] postId가 필요합니다.");
         }
 
         Integer postId = Integer.parseInt(params.get("postId"));
         Post post = postService.getPost(postId);
 
         if (post == null) {
-            throw new IllegalArgumentException("[404]" + postId + "번 게시글이 존재하지 않습니다.");
+            throw new IllegalArgumentException("[400]" + postId + "번 게시글이 존재하지 않습니다.");
         }
 
         view.displayMessage("제목: ");
