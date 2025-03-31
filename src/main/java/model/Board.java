@@ -4,13 +4,17 @@ public class Board {
     private int id;
     private int userId;
     private int boardId;
+    private String boardName;
+    private String description;
     private String createdDate;
     private String updatedDate;
 
-    public Board(int id, int userId, int boardId, String createdDate, String updatedDate) {
+    public Board(int id, int userId, int boardId, String boardName, String description) {
         this.id = id;
         this.userId = userId;
         this.boardId = boardId;
+        this.boardName = null;
+        this.description = null;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
     }

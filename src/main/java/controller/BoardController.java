@@ -2,43 +2,54 @@ package controller;
 
 import model.Board;
 import model.Post;
+import service.BoardService;
 import service.PostService;
+import sys.Request;
 import view.ConsoleView;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class BoardController {
+public class BoardController implements Controller{
     private final Scanner scanner;
     private final ConsoleView view;
     private final PostService postService;
+    private final BoardService boardService;
 
-    public BoardController(Scanner scanner, ConsoleView view, PostService postService) {
+    public BoardController(Scanner scanner, ConsoleView view, PostService postService, BoardService boardService) {
         this.scanner = scanner;
         this.view = view;
         this.postService = postService;
+        this.boardService = boardService;
     }
 
 
-
-    private void handleBoard(String act, Map<String, String> params) {
-        switch(act) {
-            case "add":
-                AddBoard(params);
-                break;
-            case "edit":
-                EditBoard(params);
-                break;
-            case "remove":
-                RemoveBoard(params);
-                break;
-            case "view":
-                ViewBoard(params);
-                break;
-            default:
-                // Todo
-                break;
+    @Override
+    public void handleRequest(Request request) {
+        try {
+            String[] pathParts = request.getPathParts();
+            Map<String, String> params = request.getParams();
+            String act = pathParts[2];
+            switch (act) {
+                case "add":
+                    AddBoard(params);
+                    break;
+                case "edit":
+                    EditBoard(params);
+                    break;
+                case "remove":
+                    RemoveBoard(params);
+                    break;
+                case "view":
+                    ViewBoard(params);
+                    break;
+                default:
+                    // Todo
+                    break;
+            }
+        } catch (Exception e) {
+            view.displayMessageln("[500] 서버 오류가 발생 했습니다: " + e.getMessage());
         }
     }
 
@@ -62,24 +73,21 @@ public class BoardController {
     }
 
     private void ViewBoard(Map<String, String> params) {
-        if (!params.containsKey("boardName")) {
-            view.displayMessageln("Board Name이 필요합니다.");
+        if (!params.containsKey("boardId")) {
+            view.displayMessageln("[400] Board ID가 필요합니다.");
         }
-        String boardName = params.get("boardName");
-        List<Board> boards = boardService.getBoardsByName(boardName);
-        if (boards.isEmpty()) {
-            view.displayMessageln(boardName+" 게시판이 존재하지 않습니다.");
+        int boardId = Integer.parseInt(params.get("boardId"));
+        Board board = boardService.getBoardById(boardId);
+        if (board == null) {
+            view.displayMessageln(boardId+" 게시판이 존재하지 않습니다.");
             return;
         }
-        for (Board b : boards) {
-            view.displayMessageln("["+b.getId()+"]"+b.getName());
-            List<Post> posts = postService.getPostsByBoardId(b.getId());
-            view.displayMessageln("글 번호/ 글 제목/ 작성일");
-            for (Post p : posts) {
-                view.displayMessageln(p.getId()+"/"+p.getTitle()+"/"+p.getCreatedDate());
-            }
-            view.displayMessageln("---------------------------------");
+        List<Post> posts = postService.getPostsByBoardId(board.getId());
+        view.displayMessageln("글 번호/ 글 제목/ 작성일");
+        for (Post p : posts) {
+            view.displayMessageln(p.getId()+"/"+p.getTitle()+"/"+p.getCreatedDate());
         }
+        view.displayMessageln("---------------------------------");
     }
 
     private void AddBoard(Map<String, String> params) {
@@ -121,7 +129,7 @@ public class BoardController {
         String newName = scanner.nextLine();
         view.displayMessage("새로운 게시판 설명: ");
         String newDesc = scanner.nextLine();
-        boardService.editBoard(boardId, newName, newDesc);
+        boardService.updateBoard(boardId, newName, newDesc);
         view.displayMessageln(boardId + "번 게시판이 수정되었습니다.");
     }
 
