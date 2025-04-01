@@ -15,8 +15,6 @@ public class Board {
         this.boardId = boardId;
         this.boardName = null;
         this.description = null;
-        this.createdDate = createdDate;
-        this.updatedDate = updatedDate;
     }
 
     public int getId() {
@@ -39,10 +37,6 @@ public class Board {
         return boardId;
     }
 
-    public void setBoardId(int boardId) {
-        this.boardId = boardId;
-    }
-
     public String getCreatedDate() {
         return createdDate;
     }
@@ -57,5 +51,9 @@ public class Board {
 
     public void setUpdatedDate(String updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public void setBoardId(int boardId) {
+        this.boardId = boardId;
     }
 }

@@ -3,7 +3,8 @@ package sys;
 import controller.BoardController;
 import controller.Controller;
 import controller.PostController;
-import model.Post;
+import repository.BoardRepository;
+import repository.PostRepository;
 import service.BoardService;
 import service.PostService;
 import util.UrlParser;
@@ -18,9 +19,12 @@ public class Application {
     // Scanner
     private final Scanner sc = new Scanner(System.in);
 
+    //Repository
+    private final BoardRepository boardRepository = new BoardRepository();
+    private final PostRepository postRepository = new PostRepository();
     // Services
-    private final PostService postService = new PostService();
-    private final BoardService boardService = new BoardService();
+    private final PostService postService = new PostService(postRepository);
+    private final BoardService boardService = new BoardService(boardRepository);
 
     private boolean run = true;
     private String domain;

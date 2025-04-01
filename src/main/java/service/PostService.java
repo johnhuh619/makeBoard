@@ -1,61 +1,45 @@
 package service;
 
 import model.Post;
+import repository.PostRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class PostService {
-    private final List<Post> posts = new ArrayList<>();
 
-    public List<Post> getPosts() {
-        return posts;
+    private PostRepository rep;
+
+    public PostService(PostRepository rep) {
+        this.rep = rep;
     }
 
-    public void createPost(String title, String content, int BoardId, int  userId) {
-        int id = posts.size() + 1;
-        LocalDateTime now = LocalDateTime.now();
-        Post newPost = new Post(id, title, content, now, BoardId, userId);
-        posts.add(newPost);
+    public List<Post> getPosts() {
+        return rep.findAll();
+    }
+
+    public void createPost(String title, String content, int BoardId, int userId) {
+        Post newPost = new Post(0, title, content, null, BoardId, userId);
+        rep.save(newPost);
     }
 
     public void deletePost(int id) {
-        if (id < 1 || id > posts.size()) {
-            return;
-        }
-        posts.remove(id - 1);
-
-        /// 삭제 후 재정렬
-        int newId = 1;
-        for (Post post : posts) {
-            post.setId(newId++);
-        }
+        rep.delete(id);
     }
 
     public void updatePost(int id, String title, String content) {
-        if (id < 1 || id > posts.size()) {
-            return;
+        Post post = rep.findById(id);
+        if (post != null) {
+            post.setTitle(title);
+            post.setContent(content);
+            rep.update(post);
         }
-        Post post = getPost(id);
-        post.setTitle(title);
-        post.setContent(content);
     }
 
     public Post getPost(int id) {
-        if (id < 1 || id > posts.size()) {
-            return null;
-        }
-        return posts.get(id - 1);
+        return rep.findById(id);
     }
 
     public List<Post> getPostsByBoardId(int boardId) {
-        List<Post> res = new ArrayList<>();
-        for (Post post : posts) {
-            if (post.getBoardId() == boardId) {
-                res.add(post);
-            }
-        }
-        return res;
+        return rep.findByBoardId(boardId);
     }
 }
