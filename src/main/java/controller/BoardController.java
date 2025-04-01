@@ -91,21 +91,8 @@ public class BoardController implements Controller{
     }
 
     private void AddBoard(Map<String, String> params) {
-        if (!params.containsKey("boardId")) {
-            view.displayMessageln("Board Id가 필요합니다.");
-            return;
-        }
-        int boardId;
-        try {
-            boardId = Integer.parseInt(params.get("boardId"));
-        } catch (NumberFormatException e ) {
-            view.displayMessageln("Board Id가 유효하지 않습니다.");
-            return;
-        }
-        Board board = boardService.getBoardById(boardId);
-        if (board == null) {
-            view.displayMessageln(boardId + "번 게시판이 존재하지 않습니다.");
-        }
+        int boardId = boardService.createBoard();
+        view.displayMessageln("새 게시판이 생성되었습니다. Board ID: " + boardId);
     }
 
     private void EditBoard(Map<String, String> params) {

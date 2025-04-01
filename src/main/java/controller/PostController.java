@@ -43,6 +43,7 @@ public class PostController implements Controller {
                     break;
                 case "view":
                     handleViewPost(params);
+                    break;
                 default:
                     view.displayMessageln("[400] 잘못된 요청입니다.");
             }
@@ -79,11 +80,11 @@ public class PostController implements Controller {
         }
 
         Integer boardId = Integer.parseInt(params.get("boardId"));
-//        Board board = boardService.getBoardById(boardId);
-//
-//        if (board == null) {
-//            throw new IllegalArgumentException(boardId + "번 게시판이 존재하지 않습니다.");
-//        }
+        Board board = boardService.getBoardById(boardId);
+
+        if (board == null) {
+            throw new IllegalArgumentException(boardId + "번 게시판이 존재하지 않습니다.");
+        }
 
         // TODO: userId를 현재 로그인된 사용자로부터 가져오도록 수정
         Integer userId = 1; // 임시 값

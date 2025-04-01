@@ -1,5 +1,6 @@
 package sys;
 
+import controller.BoardController;
 import controller.Controller;
 import controller.PostController;
 import model.Post;
@@ -64,7 +65,8 @@ public class Application {
         String category = request.getPathParts()[1];
         switch (category) {
             case "boards":
-                break;
+                BoardController boardController = new BoardController(sc, view, postService, boardService);
+                return boardController;
             case "posts":
                 PostController postController = new PostController(sc, view, postService, boardService);
                 return postController;
