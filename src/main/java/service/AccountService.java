@@ -35,8 +35,8 @@ public class AccountService {
         if(acc == null) {
             throw new IllegalArgumentException("계정이 존재하지 않습니다.");
         }
-        acc.setPassword(acc.getPassword());
-        acc.setEmail(acc.getEmail());
+        acc.setPassword(newPassword);
+        acc.setEmail(newEmail);
         acc.setUpdatedDate(java.time.LocalDateTime.now());
         return acc;
     }

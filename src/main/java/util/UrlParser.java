@@ -1,12 +1,13 @@
 package util;
 
+import model.Session;
 import sys.Request;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UrlParser {
-    public static Request parseUrl(String url) {
+    public static Request parseUrl(String url, Session session) {
         if (url == null || !url.startsWith("/")) {
             throw new IllegalArgumentException("Invalid URL");
         }
@@ -33,6 +34,6 @@ public class UrlParser {
                 params.put(keyValue[0], keyValue[1]);
             }
         }
-        return new Request(path, params);
+        return new Request(path, params, session);
     }
 }

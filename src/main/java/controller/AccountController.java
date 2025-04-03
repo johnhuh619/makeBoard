@@ -2,11 +2,11 @@ package controller;
 
 
 import model.Account;
+import model.Session;
 import service.AccountService;
 import sys.Request;
 import view.ConsoleView;
 
-import java.io.Console;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -26,17 +26,17 @@ public class AccountController implements Controller {
         String[] pathParts = request.getPathParts();
         String act = pathParts[2];
         Map<String, String> params = request.getParams();
-        //Session session = request.getSession();
+        Session session = request.getSession();
         try {
             switch (act) {
                 case "signUp":
                     handleSignUp();
                     break;
                 case "signIn":
-                    handleSignIn();
+                    handleSignIn(session);
                     break;
                 case "signOut":
-                    handleSignOut();
+                    handleSignOut(session);
                     break;
                 case "details":
                     handleDetails(params);
@@ -102,16 +102,21 @@ public class AccountController implements Controller {
         }
     }
 
-    private void handleSignOut() {
-
+    private void handleSignOut(Session session){
+        if(session.getLoggedInAccount() == null) {
+            throw new IllegalArgumentException("로그인 되어있지 않습니다");
+        }
+        session.setLoggedInAccount(null);
+        view.displayMessageln("로그아웃 되었습니다.");
     }
 
-    private void handleSignIn() {
+    private void handleSignIn(Session session) {
         view.displayMessage("계정: ");
         String username = sc.nextLine();
         view.displayMessage("비밀번호: ");
         String password = sc.nextLine();
         Account account = service.signIn(username, password);
+        session.setLoggedInAccount(account);
         view.displayMessageln("로그인 성공. 환영합니다, " + account.getUsername());
     }
 
