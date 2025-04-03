@@ -46,21 +46,28 @@ public class Application {
                 run = false;
                 continue;
             }
-            Request request = UrlParser.parseUrl(cmd);
+            Request request;
+            try {
+                request = UrlParser.parseUrl(cmd);
+                if (request == null) {
+                    throw new IllegalArgumentException("[400] 잘못된 요청입니다");
+                }
 
-            String[] pathParts = request.getPathParts();
+                String[] pathParts = request.getPathParts();
+                if (pathParts.length < 2) {
+                    throw new IllegalArgumentException("[400] 잘못된 요청입니다");
+                }
 
-            if (pathParts.length < 2) {
-                view.displayMessageln("잘못된 url 형식");
-                return;
-            }
+                // 게시판, 게시글, 계정 선택 하는 컨트롤러
+                Controller controller = getController(request);
+                if (controller != null) {
+                    controller.handleRequest(request);
+                } else{
+                    view.displayMessageln("[400] 잘못된 요청입니다.");
+                }
 
-            // 게시판, 게시글, 계정 선택 하는 컨트롤러
-            Controller controller = getController(request);
-            if (controller != null) {
-                controller.handleRequest(request);
-            } else{
-                view.displayMessageln("잘못된 요청입니다.");
+            } catch (IllegalArgumentException e) {
+                view.displayMessageln("[400] 잘못된 요청입니다.");
             }
         }
     }
